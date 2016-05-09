@@ -7,7 +7,7 @@
 // and returns the code. if no message found in the socket returns 0 (which means the client disconnected)
 int Helper::getMessageTypeCode(SOCKET sc)
 {
-	char * s = getPartFromSocket(sc, 3);
+	char* s = getPartFromSocket(sc, 3);
 	std::string msg(s);
 
 	if (msg == "")
@@ -24,7 +24,7 @@ int Helper::getMessageTypeCode(SOCKET sc)
 // this is private function
 void Helper::sendData(SOCKET sc, std::string message) 
 {
-	const char * data = message.c_str();
+	const char* data = message.c_str();
 	
 	if (send(sc, data, message.size(), 0) == INVALID_SOCKET)
 		throw std::exception("Error while sending message to client");
@@ -32,14 +32,14 @@ void Helper::sendData(SOCKET sc, std::string message)
 
 int Helper::getIntPartFromSocket(SOCKET sc, int bytesNum)
 {
-	char* s= getPartFromSocket(sc, bytesNum, 0);
+	char* s = getPartFromSocket(sc, bytesNum, 0);
 
 	return atoi(s);
 }
 
 std::string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
 {
-	char * s = getPartFromSocket(sc, bytesNum, 0);
+	char* s = getPartFromSocket(sc, bytesNum, 0);
 	std::string res(s);
 
 	return res;
@@ -47,17 +47,17 @@ std::string Helper::getStringPartFromSocket(SOCKET sc, int bytesNum)
 
 // recieve data from socket according byteSize
 // this is private function
-char * Helper::getPartFromSocket(SOCKET sc, int bytesNum)
+char* Helper::getPartFromSocket(SOCKET sc, int bytesNum)
 {
 	return getPartFromSocket(sc, bytesNum, 0);
 }
 
-char * Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
+char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 {
 	if (bytesNum == 0)
 		return "";
 
-	char * data = new char[bytesNum + 1];
+	char* data = new char[bytesNum + 1];
 	int res = recv(sc, data, bytesNum, flags);
 
 	if (res == INVALID_SOCKET)

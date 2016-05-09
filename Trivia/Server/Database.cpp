@@ -14,6 +14,3 @@ Database::~Database()
 {
 	sqlite3_close(db);
 }
-
-
-

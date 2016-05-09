@@ -13,13 +13,13 @@ public:
 	~User();
 
 	void send(std::string message);  // Send a message to the user.
-	void setGame(Game * gm);  // Get the user out of the romm and into a game.
+	void setGame(Game* gm);  // Get the user out of the romm and into a game.
 	void clearGame();  // 
 
 private:
 	std::string _username;
 	SOCKET _sock;
-	Game * _game;
-	Room * _room;
+	Game* _game;
+	Room* _room;
 };
 

@@ -23,7 +23,7 @@ std::string Question::getQuestion()
 }
 
 
-std::string * Question::getAnswers()
+std::string* Question::getAnswers()
 {
 	return _answers;
 }

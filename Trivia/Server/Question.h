@@ -10,7 +10,7 @@ public:
 	~Question() {}
 
 	std::string getQuestion();  // Returns the question.
-	std::string * getAnswers();  // Returns an array of the answers.
+	std::string* getAnswers();  // Returns an array of the answers.
 	int getCorrectAnswerIndex();  // Returns the index in the answer array which contains the correct answer.
 	int getId();  // Returns the ID of the question.
 

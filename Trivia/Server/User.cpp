@@ -19,11 +19,9 @@ void User::send(std::string message)
 }
 
 
-void User::setGame(Game * gm)
+void User::setGame(Game* gm)
 {
 	_room = nullptr;
 	_game = gm;
 }
-
-
 
