@@ -67,7 +67,6 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Helper.cpp" />
-    <ClCompile Include="Protocol.cpp" />
     <ClCompile Include="Question.cpp" />
     <ClCompile Include="ReceivedMessage.cpp" />
     <ClCompile Include="Room.cpp" />

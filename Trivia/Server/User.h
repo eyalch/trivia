@@ -10,11 +10,12 @@ class User
 {
 public:
 	User(std::string username, SOCKET sock);
-	~User();
+	~User() {}
 
 	void send(std::string message);  // Send a message to the user.
 	void setGame(Game* gm);  // Get the user out of the romm and into a game.
-	void clearGame();  // 
+	void clearGame();  // Disconnects player from the game.
+	bool createRoom(int roomId, std::string roomName, int maxUsers, int questionNo, int questionTime);  // Creates room.
 
 private:
 	std::string _username;
