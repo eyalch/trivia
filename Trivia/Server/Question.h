@@ -7,7 +7,6 @@ class Question
 {
 public:
 	Question(int id, std::string question, std::string correctAnswer, std::string answer2, std::string answer3, std::string answer4);
-	~Question() {}
 
 	std::string getQuestion();  // Returns the question.
 	std::string* getAnswers();  // Returns an array of the answers.

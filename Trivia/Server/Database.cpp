@@ -2,6 +2,7 @@
 #include "sqlite3.h"
 #include <exception>
 #include <iostream>
+#include <sstream>
 
 
 Database::Database()
@@ -61,9 +62,10 @@ bool Database::isUserExists(std::string username)
 {
 	clearTable();
 
-	std::string q = "SELECT COUNT(*) AS count FROM t_users WHERE username=" + username;
+	std::stringstream q;
+	q << "SELECT COUNT(*) AS count FROM t_users WHERE username=" << username;
 
-	if ((_rc = sqlite3_exec(_db, q.c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
 		std::cout << "SQL error: " << _zErrMsg << std::endl;
 		sqlite3_free(_zErrMsg);
@@ -81,9 +83,10 @@ bool Database::addNewUser(std::string username, std::string password, std::strin
 {
 	clearTable();
 
-	std::string q = "INSERT INTO t_users (username, password, email) VALUES (" + username + ", " + password + ", " + email + ')';
+	std::stringstream q;
+	q << "INSERT INTO t_users (username, password, email) VALUES (" << username << ", " << password << ", " << email << ')';
 
-	if ((_rc = sqlite3_exec(_db, q.c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
 		std::cout << "SQL error: " << _zErrMsg << std::endl;
 		sqlite3_free(_zErrMsg);
@@ -99,9 +102,10 @@ bool Database::isUserAndPassMatch(std::string username, std::string password)
 {
 	clearTable();
 
-	std::string q = "SELECT password FROM t_users WHERE username=" + username;
+	std::stringstream q;
+	q << "SELECT password FROM t_users WHERE username=" << username;
 
-	if ((_rc = sqlite3_exec(_db, q.c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
 		std::cout << "SQL error: " << _zErrMsg << std::endl;
 		sqlite3_free(_zErrMsg);
@@ -110,7 +114,9 @@ bool Database::isUserAndPassMatch(std::string username, std::string password)
 	}
 	else
 	{
-		return _results["password"][0] == password;
+		if (_results["password"].size() > 0)
+			return _results["password"][0] == password;
+		return false;
 	}
 }
 
@@ -121,9 +127,10 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 
 	clearTable();
 
-	std::string q = "SELECT * FROM t_questions ORDER BY RAND() LIMIT " + questionsNo;
+	std::stringstream q;
+	q << "SELECT * FROM t_questions ORDER BY RAND() LIMIT " << questionsNo;
 
-	if ((_rc = sqlite3_exec(_db, q.c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
 		std::cout << "SQL error: " << _zErrMsg << std::endl;
 		sqlite3_free(_zErrMsg);
@@ -154,12 +161,61 @@ int Database::insertNewGame()
 {
 	clearTable();
 
-	std::string q = "INSERT INTO t_games (status, start_time) VALUES (0, datetime(YYYY-MM-DD HH:MM:SS))";
+	std::stringstream q;
+	q << "INSERT INTO t_games (status, start_time) VALUES (0, datetime('now', '+3 hours'));SELECT MAX(game_id) AS game_id FROM t_games";
 
-	if ((_rc = sqlite3_exec(_db, q.c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
 		std::cout << "SQL error: " << _zErrMsg << std::endl;
 		sqlite3_free(_zErrMsg);
+
+		return -1;
+	}
+	else
+	{
+		return atoi(_results["game_id"][0].c_str());
+	}
+}
+
+
+bool Database::updateGameStatus(int gameId)
+{
+	clearTable();
+
+	std::stringstream q;
+	q << "UPDATE t_games SET status=1, end_time=datetime('now', '+3 hours') WHERE game_id=" << gameId;
+
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	{
+		std::cout << "SQL error: " << _zErrMsg << std::endl;
+		sqlite3_free(_zErrMsg);
+
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+
+bool Database::addAnswerToPlayer(int gameId, std::string username, int questionId, std::string answer, bool isCorrect, int answerTime)
+{
+	clearTable();
+
+	std::stringstream q;
+	q << "INSERT INTO t_players_answers (game_id, username, question_id, player_answer, is_correct, answer_time) VALUES (" << gameId << ", " << username << ", " << questionId << ", " << answer << ", " << isCorrect << ", " << answerTime << ')';
+
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	{
+		std::cout << "SQL error: " << _zErrMsg << std::endl;
+		sqlite3_free(_zErrMsg);
+
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 

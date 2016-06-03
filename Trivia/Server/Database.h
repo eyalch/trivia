@@ -31,11 +31,6 @@ private:
 
 	static std::unordered_map<std::string, std::vector<std::string>> _results;
 
-	static int callbackCount(void* notUsed, int argc, char** argv, char** azCol);
-	static int callbackQuestions(void* notUsed, int argc, char** argv, char** azCol);
-	static int callbackBestScores(void* notUsed, int argc, char** argv, char** azCol);
-	static int callbackPersonalStatus(void* notUsed, int argc, char** argv, char** azCol);
-
 	void clearTable();
 	static int callback(void* notUsed, int argc, char** argv, char** azCol);
 };
