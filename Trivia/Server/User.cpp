@@ -9,55 +9,23 @@ User::User(std::string username, SOCKET sock) : _username(username), _sock(sock)
 	_game = nullptr;
 }
 
-
-User::~User()
-{
-	// Check if user is the admin, if he is delete _room;
-}
-
-
 void User::send(std::string message)
 {
-	Helper::sendData(_sock, message);
+	try
+	{
+		Helper::sendData(_sock, message);
+	}
+	catch (const std::exception&)
+	{
+		
+	}
 }
-
-
-std::string User::getUsername()
-{
-	return _username;
-}
-
-
-SOCKET User::getSocket()
-{
-	return _sock;
-}
-
-
-Room* User::getRoom()
-{
-	return _room;
-}
-
-
-Game* User::getGame()
-{
-	return _game;
-}
-
 
 void User::setGame(Game* gm)
 {
 	_room = nullptr;
 	_game = gm;
 }
-
-
-void User::clearGame()
-{
-	_game = nullptr;
-}
-
 
 bool User::createRoom(int roomId, std::string roomName, int maxUsers, int questionNo, int questionTime)
 {
@@ -77,7 +45,6 @@ bool User::createRoom(int roomId, std::string roomName, int maxUsers, int questi
 	}
 }
 
-
 bool User::joinRoom(Room* newRoom)
 {
 	if (_room != nullptr)
@@ -88,9 +55,38 @@ bool User::joinRoom(Room* newRoom)
 	}
 }
 
-
 void User::leaveRoom()
 {
+	if (_room != nullptr)
+	{
+		// _room->leaveRoom()
 
+		_room = nullptr;
+	}
 }
 
+int User::closeRoom()
+{
+	int roomId = -1;
+
+	if (_room != nullptr)
+	{
+		if ((roomId /*= _room->closeRoom()*/) != -1)
+		{
+			delete _room;
+			_room = nullptr;
+		}
+	}
+	
+	return roomId;
+}
+
+bool User::leaveGame()
+{
+	if (_game != nullptr)
+	{
+		// _game->leaveGame()
+
+		_game = nullptr;
+	}
+}

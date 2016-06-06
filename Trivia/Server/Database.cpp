@@ -21,12 +21,10 @@ Database::Database()
 		throw std::exception("Database doesn't exist!");
 }
 
-
 Database::~Database()
 {
 	sqlite3_close(_db);
 }
-
 
 void Database::clearTable()
 {
@@ -34,7 +32,6 @@ void Database::clearTable()
 		it.second.clear();
 	_results.clear();
 }
-
 
 int Database::callback(void* notUsed, int argc, char** argv, char** azCol)
 {
@@ -57,7 +54,6 @@ int Database::callback(void* notUsed, int argc, char** argv, char** azCol)
 	return 0;
 }
 
-
 bool Database::isUserExists(std::string username)
 {
 	clearTable();
@@ -78,7 +74,6 @@ bool Database::isUserExists(std::string username)
 	}
 }
 
-
 bool Database::addNewUser(std::string username, std::string password, std::string email)
 {
 	clearTable();
@@ -96,7 +91,6 @@ bool Database::addNewUser(std::string username, std::string password, std::strin
 	
 	return true;
 }
-
 
 bool Database::isUserAndPassMatch(std::string username, std::string password)
 {
@@ -119,7 +113,6 @@ bool Database::isUserAndPassMatch(std::string username, std::string password)
 		return false;
 	}
 }
-
 
 std::vector<Question*> Database::initQuestions(int questionsNo)
 {
@@ -144,18 +137,15 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 	return questions;
 }
 
-
 std::vector<std::string> Database::getBestScores()
 {
 
 }
 
-
 std::vector<std::string> Database::getPersonalStatus(std::string)
 {
 
 }
-
 
 int Database::insertNewGame()
 {
@@ -177,7 +167,6 @@ int Database::insertNewGame()
 	}
 }
 
-
 bool Database::updateGameStatus(int gameId)
 {
 	clearTable();
@@ -198,7 +187,6 @@ bool Database::updateGameStatus(int gameId)
 	}
 }
 
-
 bool Database::addAnswerToPlayer(int gameId, std::string username, int questionId, std::string answer, bool isCorrect, int answerTime)
 {
 	clearTable();
@@ -218,4 +206,3 @@ bool Database::addAnswerToPlayer(int gameId, std::string username, int questionI
 		return true;
 	}
 }
-

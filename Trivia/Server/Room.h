@@ -9,7 +9,8 @@ class Room
 public:
 	Room(int id, User* admin, std::string name, int maxUsers, int questionNo, int questionTime);
 
-
+	bool joinRoom(User* user);
+	void leaveRoom(User* user);
 
 private:
 	std::vector<User*> _users;

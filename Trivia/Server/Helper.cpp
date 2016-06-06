@@ -19,7 +19,6 @@ int Helper::getMessageTypeCode(SOCKET sc)
 	return  res;
 }
 
-
 // send data to socket
 // this is private function
 void Helper::sendData(SOCKET sc, std::string message) 
@@ -71,7 +70,6 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 
 	return data;
 }
-
 
 std::string Helper::getPaddedNumber(int num, int digits)
 {
