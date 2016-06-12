@@ -53,6 +53,8 @@ bool User::joinRoom(Room* newRoom)
 	{
 		// Add user to newRoom!
 	}
+
+	return false;
 }
 
 void User::leaveRoom()
@@ -89,4 +91,6 @@ bool User::leaveGame()
 
 		_game = nullptr;
 	}
+
+	return false;
 }

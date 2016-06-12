@@ -11,11 +11,14 @@
 #include "Room.h"
 #include "ReceivedMessage.h"
 
+
 class TriviaServer
 {
 public:
 	TriviaServer();
 	~TriviaServer();
+
+	void serve();
 
 private:
 	SOCKET _socket;
@@ -27,4 +30,10 @@ private:
 	std::queue<ReceivedMessage*> _queRcvMessages;
 
 	static int _roomIdSequence;
+
+	void bindAndListen();
+	void accept();
+	void clientHandler(SOCKET client_socket);
+
+	ReceivedMessage* buildReceiveMessage(SOCKET client_socket, int msgCode);
 };

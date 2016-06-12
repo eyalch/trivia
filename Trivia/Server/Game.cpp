@@ -18,7 +18,6 @@ Game::Game(const std::vector<User*>& players, int questionNo, Database& db) : _d
 
 	for (auto &i : _players)
 	{
-		_results[i]
+		//_results[i]
 	}
 }
-

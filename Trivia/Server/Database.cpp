@@ -21,11 +21,6 @@ Database::Database()
 		throw std::exception("Database doesn't exist!");
 }
 
-Database::~Database()
-{
-	sqlite3_close(_db);
-}
-
 void Database::clearTable()
 {
 	for (auto &it : _results)
@@ -130,7 +125,7 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 	}
 	else
 	{
-		for (int i = 0; i < _results.size(); i++)
+		for (size_t i = 0; i < _results.size(); i++)
 			questions.push_back(new Question(atoi(_results["question_id"][i].c_str()), _results["question"][i], _results["correct_ans"][i], _results["ans2"][i], _results["ans3"][i], _results["ans4"][i]));
 	}
 
@@ -139,12 +134,12 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 
 std::vector<std::string> Database::getBestScores()
 {
-
+	return {};
 }
 
 std::vector<std::string> Database::getPersonalStatus(std::string)
 {
-
+	return {};
 }
 
 int Database::insertNewGame()

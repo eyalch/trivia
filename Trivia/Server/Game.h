@@ -5,19 +5,21 @@
 #include "Database.h"
 #include <map>
 
+class User;
+
 class Game
 {
 public:
 	Game(const std::vector<User*>& players, int questionNo, Database& db);
 	~Game() {}
 
-	void sendFirstQuestion();
+	/*void sendFirstQuestion();
 	void handleFinishGame();
 	bool handleNextTurn();
 	bool handleAnswerFromUser(User*, int, int);
 	bool leaveGame(User*);
 	int getID();
-
+	*/
 private:
 	std::vector<Question> _questions;
 	std::vector<User*> _players;
@@ -25,8 +27,7 @@ private:
 	Database& _db;
 	std::map<std::string, int> _results;
 
-	bool insertGameToDB();
+	/*bool insertGameToDB();
 	void initQuestionsFromDB();
-	void sendQuestionToAllUsers();
+	void sendQuestionToAllUsers();*/
 };
-

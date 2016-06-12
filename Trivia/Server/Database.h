@@ -12,7 +12,7 @@ class Database
 {
 public:
 	Database();
-	~Database();
+	~Database() { sqlite3_close(_db); }
 
 	bool isUserExists(std::string username);  // Check if user exists in database.
 	bool addNewUser(std::string username, std::string password, std::string email);  // Add a new user to the database.

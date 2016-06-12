@@ -1,8 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "Room.h"
 #include "User.h"
+
+class User;
 
 class Room
 {
@@ -15,7 +16,7 @@ public:
 private:
 	std::vector<User*> _users;
 	User* _admin;
-	int _maxUsers;
+	unsigned int _maxUsers;
 	int _questionTime;
 	int _questionNo;
 	std::string _name;

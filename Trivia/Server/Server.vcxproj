@@ -44,6 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,8 +68,8 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Question.cpp" />
-    <ClCompile Include="ReceivedMessage.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="sqlite3.c" />
     <ClCompile Include="TriviaServer.cpp" />
