@@ -61,7 +61,7 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 
 	if (res == INVALID_SOCKET)
 	{
-		std::string s = "Error while recieving from socket: ";
+		std::string s = "Error while receiving from socket: ";
 		s += std::to_string(sc);
 		throw std::exception(s.c_str());
 	}

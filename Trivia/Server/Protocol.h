@@ -27,7 +27,7 @@
 #define JOIN_ROOM_RESPONSE_NO_ROOM_OR_OTHER "1102"  // [1102]
 
 #define LEAVE_ROOM_REQUEST "211"  // [211]
-#define LEAVE_ROOM_RESPONSE "112"  // [112]
+#define LEAVE_ROOM_RESPONSE "1120"  // [1120]
 
 #define CREATE_ROOM_REQUEST "213"  // [213 ##roomNameLength roomName... #playersNumber ##questionsNumber ##questionTimeInSec]
 #define CREATE_ROOM_RESPONSE "114"  // [See following lines]

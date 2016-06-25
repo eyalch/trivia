@@ -1,9 +1,12 @@
 #include "Database.h"
+#include "Helper.h"
 #include "sqlite3.h"
 #include <exception>
 #include <iostream>
 #include <sstream>
 
+
+std::unordered_map<std::string, std::vector<std::string>> Database::_results = std::unordered_map<std::string, std::vector<std::string>>();
 
 Database::Database()
 {
@@ -28,7 +31,7 @@ void Database::clearTable()
 	_results.clear();
 }
 
-int Database::callback(void* notUsed, int argc, char** argv, char** azCol)
+int Database::callback(void * notUsed, int argc, char ** argv, char ** azCol)
 {
 	for (int i = 0; i < argc; i++)
 	{
@@ -54,7 +57,7 @@ bool Database::isUserExists(std::string username)
 	clearTable();
 
 	std::stringstream q;
-	q << "SELECT COUNT(*) AS count FROM t_users WHERE username=" << username;
+	q << "SELECT COUNT(*) AS count FROM t_users WHERE username=\'" << username << '\'';
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -74,7 +77,7 @@ bool Database::addNewUser(std::string username, std::string password, std::strin
 	clearTable();
 
 	std::stringstream q;
-	q << "INSERT INTO t_users (username, password, email) VALUES (" << username << ", " << password << ", " << email << ')';
+	q << "INSERT INTO t_users (username, password, email) VALUES (\'" << username << "\', \'" << password << "\', \'" << email << "\')";
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -92,7 +95,7 @@ bool Database::isUserAndPassMatch(std::string username, std::string password)
 	clearTable();
 
 	std::stringstream q;
-	q << "SELECT password FROM t_users WHERE username=" << username;
+	q << "SELECT password FROM t_users WHERE username=\'" << username << '\'';
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -109,14 +112,14 @@ bool Database::isUserAndPassMatch(std::string username, std::string password)
 	}
 }
 
-std::vector<Question*> Database::initQuestions(int questionsNo)
+std::vector<Question *> Database::initQuestions(int questionsNo)
 {
-	std::vector<Question*> questions;
+	std::vector<Question *> questions;
 
 	clearTable();
 
 	std::stringstream q;
-	q << "SELECT * FROM t_questions ORDER BY RAND() LIMIT " << questionsNo;
+	q << "SELECT * FROM t_questions ORDER BY RANDOM() LIMIT " << questionsNo;
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -125,7 +128,7 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 	}
 	else
 	{
-		for (size_t i = 0; i < _results.size(); i++)
+		for (size_t i = 0; i < _results["question_id"].size(); i++)
 			questions.push_back(new Question(atoi(_results["question_id"][i].c_str()), _results["question"][i], _results["correct_ans"][i], _results["ans2"][i], _results["ans3"][i], _results["ans4"][i]));
 	}
 
@@ -134,7 +137,30 @@ std::vector<Question*> Database::initQuestions(int questionsNo)
 
 std::vector<std::string> Database::getBestScores()
 {
-	return {};
+	std::vector<std::string> bestScores;
+
+	clearTable();
+
+	std::stringstream q;
+	q << "SELECT username, SUM(is_correct) AS score FROM t_players_answers GROUP BY username ORDER BY score DESC LIMIT 3";
+
+	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
+	{
+		std::cout << "SQL error: " << _zErrMsg << std::endl;
+		sqlite3_free(_zErrMsg);
+	}
+	else
+	{
+		for (size_t i = 0; i < _results["username"].size(); i++)
+		{
+			std::string username = _results["username"][i];
+			int score = atoi(_results["score"][i].c_str());
+
+			bestScores.push_back(Helper::getPaddedNumber(username.size(), 2) + username + Helper::getPaddedNumber(score, 6));
+		}
+	}
+
+	return bestScores;
 }
 
 std::vector<std::string> Database::getPersonalStatus(std::string)
@@ -187,7 +213,7 @@ bool Database::addAnswerToPlayer(int gameId, std::string username, int questionI
 	clearTable();
 
 	std::stringstream q;
-	q << "INSERT INTO t_players_answers (game_id, username, question_id, player_answer, is_correct, answer_time) VALUES (" << gameId << ", " << username << ", " << questionId << ", " << answer << ", " << isCorrect << ", " << answerTime << ')';
+	q << "INSERT INTO t_players_answers (game_id, username, question_id, player_answer, is_correct, answer_time) VALUES (" << gameId << ", \'" << username << "\', " << questionId << ", \'" << answer << "\', " << isCorrect << ", " << answerTime << ')';
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{

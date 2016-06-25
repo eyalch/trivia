@@ -9,14 +9,14 @@ public:
 	ReceivedMessage(SOCKET client_socket, int msgCode) : ReceivedMessage(client_socket, msgCode, {}) {  }
 
 	SOCKET getSock() { return _sock; }
-	User* getUser() { return _user; }
-	void setUser(User* user) { _user = user; }
+	User * getUser() { return _user; }
+	void setUser(User * user) { _user = user; }
 	int getMessageCode() { return _messageCode; }
 	std::vector<std::string>& getValues() { return _values; }
 
 private:
 	SOCKET _sock;
-	User* _user;
+	User * _user;
 	int _messageCode;
 	std::vector<std::string> _values;
 };
