@@ -14,9 +14,9 @@ namespace Client
 	public partial class RoomAsPlayerForm : Form
 	{
 		Stream stream;
-		int roomId;
+		string roomId;
 
-		public RoomAsPlayerForm(Stream stream, string username, int roomId)
+		public RoomAsPlayerForm(Stream stream, string username, string roomId)
 		{
 			InitializeComponent();
 

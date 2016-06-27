@@ -57,7 +57,7 @@ namespace Client
 					k = stream.Read(bb, 0, bb.Length);
 					response = Encoding.Default.GetString(bb);
 
-					int roomId = Convert.ToInt32(response);
+					string roomId = response;
 
 					bb = new byte[2];
 					k = stream.Read(bb, 0, bb.Length);
