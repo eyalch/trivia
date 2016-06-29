@@ -19,7 +19,6 @@ int Helper::getMessageTypeCode(SOCKET sc)
 	return  res;
 }
 
-
 // send data to socket
 // this is private function
 void Helper::sendData(SOCKET sc, std::string message) 
@@ -62,7 +61,7 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 
 	if (res == INVALID_SOCKET)
 	{
-		std::string s = "Error while recieving from socket: ";
+		std::string s = "Error while receiving from socket: ";
 		s += std::to_string(sc);
 		throw std::exception(s.c_str());
 	}
@@ -71,7 +70,6 @@ char* Helper::getPartFromSocket(SOCKET sc, int bytesNum, int flags)
 
 	return data;
 }
-
 
 std::string Helper::getPaddedNumber(int num, int digits)
 {

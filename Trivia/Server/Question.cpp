@@ -12,7 +12,7 @@ Question::Question(int id, std::string question, std::string correctAnswer, std:
 	
 	_correctAnswerIndex = std::find(answers.begin(), answers.end(), correctAnswer) - answers.begin();
 	
-	for (int i = 0; i < answers.size(); i++)
+	for (size_t i = 0; i < answers.size(); i++)
 		_answers[i] = answers[i];
 }
 

@@ -17,7 +17,6 @@ bool Validator::isPasswordValid(std::string password)
 		return true;
 }
 
-
 bool Validator::isUsernameValid(std::string username)
 {
 	if (username == "")
