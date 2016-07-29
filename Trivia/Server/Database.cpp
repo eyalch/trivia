@@ -10,7 +10,9 @@ std::unordered_map<std::string, std::vector<std::string>> Database::_results;
 
 Database::Database()
 {
-	if (FILE * file = fopen(DB_NAME, "r"))
+	FILE * file;
+	errno_t err = fopen_s(&file, DB_NAME, "r");
+	if (!err)
 	{
 		fclose(file);
 
@@ -77,7 +79,7 @@ bool Database::addNewUser(std::string username, std::string password, std::strin
 	clearTable();
 
 	std::stringstream q;
-	q << "INSERT INTO t_users (username, password, email) VALUES (\'" << username << "\', \'" << password << "\', '\'" << email << "\')";
+	q << "INSERT INTO t_users (username, password, email) VALUES (\'" << username << "\', \'" << password << "\', \'" << email << "\')";
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -119,7 +121,7 @@ std::vector<Question *> Database::initQuestions(int questionsNo)
 	clearTable();
 
 	std::stringstream q;
-	q << "SELECT * FROM t_questions ORDER BY RAND() LIMIT " << questionsNo;
+	q << "SELECT * FROM t_questions ORDER BY RANDOM() LIMIT " << questionsNo;
 
 	if ((_rc = sqlite3_exec(_db, q.str().c_str(), callback, 0, &_zErrMsg)) != SQLITE_OK)
 	{
@@ -128,7 +130,7 @@ std::vector<Question *> Database::initQuestions(int questionsNo)
 	}
 	else
 	{
-		for (size_t i = 0; i < _results.size(); i++)
+		for (size_t i = 0; i < _results["question_id"].size(); i++)
 			questions.push_back(new Question(atoi(_results["question_id"][i].c_str()), _results["question"][i], _results["correct_ans"][i], _results["ans2"][i], _results["ans3"][i], _results["ans4"][i]));
 	}
 

@@ -418,7 +418,10 @@ void TriviaServer::handleGetPersonalStatus(ReceivedMessage * msg)
 	s << Helper::getPaddedNumber(correct_answers, 6);
 	s << Helper::getPaddedNumber(incorrect_answers, 6);
 	s << Helper::getPaddedNumber((int) answer_time, 2);
+#pragma warning(push)
+#pragma warning(disable: 4244)
 	s << Helper::getPaddedNumber((answer_time - (int) answer_time) * 100, 2);
+#pragma warning(pop)
 
 	msg->getUser()->send(s.str());
 }
@@ -570,6 +573,7 @@ void TriviaServer::handleReceivedMessages()
 				break;
 			case 225:
 				handleGetPersonalStatus(rcvMsg);
+				break;
 			case 299:
 				safeDeleteUser(rcvMsg);
 				break;
